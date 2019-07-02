@@ -2,6 +2,7 @@
 #include "app-resources/resources.h"
 #include "common/core/debug.h"
 #include "meas_acc/resources.h"
+#include "ui_ind/resources.h"
 #include "whiteboard/builtinTypes/UnknownStructure.h"
 
 #include <float.h>
@@ -201,6 +202,10 @@ void AccelerometerSumService::onNotify(whiteboard::ResourceId resourceId, const 
             // and update our WB resource. This causes notification to be fired to our subscribers
             updateResource(WB_RES::LOCAL::EXERCISE_SUMVECTOR_MIKKO(),
                            ResponseOptions::Empty, sampleDataValue);
+
+            // Blink the LED briefly to indicate a new value
+            const uint16_t indicationType = 2; // SHORT_VISUAL_INDICATION
+            asyncPut(WB_RES::LOCAL::UI_IND_VISUAL::ID, AsyncRequestOptions::Empty, indicationType);
         }
     }
 }
