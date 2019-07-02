@@ -13,4 +13,4 @@ This app is a test project on how one can write functionality for the Movesense 
    * `vagrant ssh -c "./scripts/cmake-build.sh avg-acceleration-app"`
    * Optionally you can also start an interactive session within the virtual machine using `vagrant ssh` and call the build command there.
    * To build a Release version, do `vagrant ssh -c "./scripts/cmake-build.sh avg-acceleration-app Release`
-
+   * After the previous step, to build a DFU package (release version): `vagrant ssh -c "cd avg-acceleration-app/buildRelease && ninja dfupkg`
