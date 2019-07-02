@@ -18,3 +18,9 @@ executionContexts:
     numberOfResponses: 10
     stackSize: 768
     priority: normal
+
+
+apis:
+  AccelerometerSum.*:
+    apiId: 100
+    defaultExecutionContext: meas

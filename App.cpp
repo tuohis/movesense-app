@@ -1,9 +1,11 @@
+#include "AccelerometerSumService.h"
 #include "movesense.h"
 
 MOVESENSE_APPLICATION_STACKSIZE(1024)
 
-MOVESENSE_PROVIDERS_BEGIN(0)
-MOVESENSE_PROVIDERS_END(0)
+MOVESENSE_PROVIDERS_BEGIN(1)
+MOVESENSE_PROVIDER_DEF(AccelerometerSumService)
+MOVESENSE_PROVIDERS_END(1)
 
 MOVESENSE_FEATURES_BEGIN()
 // Explicitly enable or disable Movesense framework core modules.
@@ -29,12 +31,12 @@ OPTIONAL_CORE_MODULE(CustomGattService, false)
 // NOTE: If building a simulator build, these macros are obligatory!
 DEBUGSERVICE_BUFFER_SIZE(6, 120); // 6 lines, 120 characters total
 DEBUG_EEPROM_MEMORY_AREA(true, 0, 16384)
-// Rest of the EEPROM is for Logbook 
+// Rest of the EEPROM is for Logbook
 LOGBOOK_MEMORY_AREA(16384, (384 * 1024)-16384);
 
-APPINFO_NAME("Sample Plain");
-APPINFO_VERSION("1.1.0");
-APPINFO_COMPANY("Movesense");
+APPINFO_NAME("Mikko Tuohimaa Movetest Sample App");
+APPINFO_VERSION("1.0.0");
+APPINFO_COMPANY("Mikko Tuohimaa");
 
 // NOTE: SERIAL_COMMUNICATION macro has been DEPRECATED
 BLE_COMMUNICATION(true)
