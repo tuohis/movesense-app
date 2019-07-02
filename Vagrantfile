@@ -4,8 +4,8 @@ Vagrant.configure('2') do |config|
   config.ssh.forward_agent = true
 
   config.vm.provider 'virtualbox' do |vb|
-    vb.memory = '2048'
-    vb.cpus = 2
+    vb.memory = '1024'
+    vb.cpus = 1
   end
 
   config.vm.provision 'shell', privileged: true, inline: <<-SHELL
@@ -23,6 +23,4 @@ Vagrant.configure('2') do |config|
     fi
   SHELL
 
-  # Mount the current directory so that the code can be written on host and built on guest
-  # config.vm.synced_folder "./", "/vagrant/project"
 end
