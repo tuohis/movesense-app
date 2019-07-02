@@ -1,0 +1,72 @@
+# This file defines the API for getting an average of the acceleration every second
+#
+swagger: '2.0'
+
+# Document metadata
+info:
+  version: "1.0.0"
+  title: Movesense Accelerometer Sum app API
+  description: |
+    This file defines API for Movesense Accelerometer Sum service
+
+  termsOfService: http://suunto.com/wbapi/terms/
+  contact:
+    name: Mikko Tuohimaa
+    email: mikko.tuohimaa@iki.fi
+
+# Paths
+paths:
+  /Exercise/Sumvector/Mikko/Subscription:
+    post:
+      description: |
+        Subscribe to periodic Data values.
+        See documentation on product-specific measurement periods at
+        http://XXX.suunto.com/XXX. If measurement source is unavailable, the
+        Measurement member will be empty. If present, Measurement member
+        contains single measurement result.
+      responses:
+        200:
+          description: Operation completed successfully
+        x-std-errors:
+          description: See common error codes http://developer.suunto.com/api/std-errors#subscribe
+        x-notification:
+          description: New value
+          schema:
+            $ref: '#/definitions/SampleDataValue'
+    delete:
+      description: |
+        Unsubscribe from sample data values.
+      responses:
+        200:
+          description: Operation completed successfully
+        x-std-errors:
+          description: See common error codes http://developer.suunto.com/api/std-errors#unsubscribe
+
+definitions:
+  SampleDataValue:
+    required:
+      - RelativeTime
+      - XValue
+      - YValue
+      - ZValue
+    properties:
+      RelativeTime:
+        description: Relative time of measurement
+        type: integer
+        format: uint32
+        x-unit: millisecond
+      XValue:
+        description: Sample Data Value (the average X axis acceleration over the measurement interval)
+        type: number
+        format: float
+        x-unit: m/s^2
+      YValue:
+        description: Sample Data Value (the average Y axis acceleration over the measurement interval)
+        type: number
+        format: float
+        x-unit: m/s^2
+      ZValue:
+        description: Sample Data Value (the average Z axis acceleration over the measurement interval)
+        type: number
+        format: float
+        x-unit: m/s^2
