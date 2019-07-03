@@ -112,9 +112,8 @@ whiteboard::Result AccelerometerSumService::startRunning(whiteboard::RequestId& 
 
     DEBUGLOG("AccelerometerSumService::startRunning()");
 
-    // Reset max acceleration members
-    this->accValue = whiteboard::FloatVector3D();
-    this->mSamplesIncluded = 0;
+    // Reset averager state
+    this->averager.reset();
 
     wb::Result result = getResource(ACCELEROMETER_RESOURCE_ENDPOINT, mMeasAccResourceId);
     if (!wb::RETURN_OKC(result))
@@ -176,27 +175,25 @@ void AccelerometerSumService::onNotify(whiteboard::ResourceId resourceId, const 
 
         for (const auto& sample : arrayData)
         {
-            this->accValue += sample;
+            this->averager.addValue(sample);
         }
-
-        this->mSamplesIncluded += arrayData.size();
-
 
         uint32_t relativeTime = linearAccelerationValue.timestamp;
 
         // Publish a new value if it's time. Take variable overflow into account
         if (relativeTime > this->previousPublishTimestamp + PUBLISH_INTERVAL_MS || relativeTime < this->previousPublishTimestamp)
         {
+            whiteboard::FloatVector3D averageAcceleration = this->averager.getAverage();
+
             // Reset counter and notify our subscribers
             WB_RES::SampleDataValue sampleDataValue;
             sampleDataValue.relativeTime = relativeTime;
-            sampleDataValue.xValue = this->accValue.x / this->mSamplesIncluded;
-            sampleDataValue.yValue = this->accValue.y / this->mSamplesIncluded;
-            sampleDataValue.zValue = this->accValue.z / this->mSamplesIncluded;
+            sampleDataValue.xValue = averageAcceleration.x;
+            sampleDataValue.yValue = averageAcceleration.y;
+            sampleDataValue.zValue = averageAcceleration.z;
 
             // Reset members
-            this->mSamplesIncluded = 0;
-            this->accValue = whiteboard::FloatVector3D();
+            this->averager.reset();
             this->previousPublishTimestamp = relativeTime;
 
             // and update our WB resource. This causes notification to be fired to our subscribers

@@ -1,10 +1,12 @@
 #pragma once
 
+
 #include <whiteboard/LaunchableModule.h>
 #include <whiteboard/ResourceClient.h>
 #include <whiteboard/ResourceProvider.h>
 #include <whiteboard/containers/RequestMap.h>
 
+#include "lib/Averager.h"
 #include "wb-resources/resources.h"
 
 class AccelerometerSumService FINAL : private whiteboard::ResourceClient,
@@ -119,12 +121,9 @@ private:
 
     bool isRunning;
 
-    // The number of samples included in the accumulator value
-    size_t mSamplesIncluded;
-
     // The (relative) timestamp of the previous published value in milliseconds
     uint32_t previousPublishTimestamp;
 
     // The accumulated sum vector of acceleration
-    whiteboard::FloatVector3D accValue;
+    Averager<whiteboard::FloatVector3D> averager;
 };

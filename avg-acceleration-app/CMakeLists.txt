@@ -12,3 +12,5 @@ endif()
 
 include(${MOVESENSE_CORE_LIBRARY}/MovesenseFromStaticLib.cmake REQUIRED)
 
+# Enable including headers from the /lib/ directory
+include_directories(..)
